@@ -1,0 +1,14 @@
+---
+- hosts: PRD
+
+  tasks:
+  - name: Copiando host
+    copy:
+      src: /root/semillas/hosts
+      dest: /etc/hosts      
+  - name: Copiando sh    
+    copy:
+      src: /root/semillas/cpllaves.sh
+      dest: /root/cpllaves.sh
+
+
