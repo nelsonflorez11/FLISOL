@@ -1,35 +1,37 @@
 ---
 - hosts: PRD
   tasks:
-  - name: Creando usuarios prueba
+  - name: Creando usuario prueba
     user:
        name: prueba
-       comment: Usuario de prueba
+       comment: Usuario prueba
        uid: 1040
-  - name: Creando llaves SSH de root 
+  - name: Creando llaves SSH  
     user:
-       name: prueba
+       name:  "{{ item }}"
        generate_ssh_key: yes
        ssh_key_bits: 2048
        ssh_key_file: .ssh/id_rsa
-  - name: Creando llaves SSH de root
-    user:
-       name: root
-       generate_ssh_key: yes
-       ssh_key_bits: 2048
-       ssh_key_file: .ssh/id_rsa
+    with_items:
+         - root
+         - prueba
 
-  - name: cambiando contraseña de prueba
+  - name: Cambiando contraseña del usuario prueba
     shell: echo -e "passwordprueba" | (passwd --stdin prueba)
+  - name: Cambiando caducidad de contraseña del usuario prueba
+    command: chage -m 0 -M 99999 -I -1 -E -1 prueba
 
-
-  - name: Copiando config de prueba
+  - name: Copiando config al usuario prueba
     copy:
       src: /root/semillas/config
-      dest: /home/prueba/.ssh
-  - name: Copiando config de root
+      dest: /home/{{ item }}/.ssh
+    with_items:
+         - prueba   
+  - name: Copiando config al usuario root
     copy:
       src: /root/semillas/config
-      dest: /root/.ssh
-  - name: ejecutando sh
+      dest: /{{ item }}/.ssh
+    with_items:
+         - root  
+  - name: Compartiendo llaves SSH
     command: sh /root/cpllaves.sh
