@@ -1,0 +1,41 @@
+---
+- hosts: all
+  tasks:
+    - name: Creando particion
+      parted:
+        device: /dev/sdb
+        number: 1
+        flags: [ lvm ]
+        state: present
+        part_start: 0%
+        part_end: 100%
+        unit: '%'        
+        # - name: Extendiendo VG 
+        #shell: vgextend fedora /dev/sdb1
+    - name: Extendiendo vg_flisol
+      lvg:
+        vg: vg_flisol
+        pvs: /dev/sda2,/dev/sdb1
+    
+    - name: Creando lv_flisol
+      lvol:
+        vg: vg_flisol
+        lv: lv_flisol
+        size: 100%FREE
+    - name: Creando  ext4 filesystem 
+      filesystem:
+        fstype: ext4
+        dev: /dev/mapper/vg_flisol-lv_flisol     
+    - name: Creando punto de montaje
+      file: 
+        path: /flisol_2019 
+        state: directory 
+        owner: flisol 
+        group: flisol 
+        mode: 775
+    - name: Montando lv_flisol
+      mount:
+        path: /flisol_2019
+        src: /dev/mapper/vg_flisol-lv_flisol
+        fstype: ext4
+        state: mounted

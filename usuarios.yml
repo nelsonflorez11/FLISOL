@@ -1,10 +1,10 @@
 ---
 - hosts: PRD
   tasks:
-  - name: Creando usuario prueba
+  - name: Creando usuario flisol
     user:
-       name: prueba
-       comment: Usuario prueba
+       name: flisol
+       comment: Usuario para el flisol
        uid: 1040
   - name: Creando llaves SSH  
     user:
@@ -14,19 +14,19 @@
        ssh_key_file: .ssh/id_rsa
     with_items:
          - root
-         - prueba
+         - flisol
 
-  - name: Cambiando contraseña del usuario prueba
-    shell: echo -e "passwordprueba" | (passwd --stdin prueba)
-  - name: Cambiando caducidad de contraseña del usuario prueba
-    command: chage -m 0 -M 99999 -I -1 -E -1 prueba
+  - name: Cambiando contraseña del usuario flisol
+    shell: echo -e "flisol2019" | (passwd --stdin flisol)
+  - name: Cambiando caducidad de contraseña del usuario flisol
+    command: chage -m 0 -M 99999 -I -1 -E -1 flisol
 
-  - name: Copiando config al usuario prueba
+  - name: Copiando config al usuario flisol
     copy:
       src: /root/semillas/config
       dest: /home/{{ item }}/.ssh
     with_items:
-         - prueba   
+         - flisol   
   - name: Copiando config al usuario root
     copy:
       src: /root/semillas/config
