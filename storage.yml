@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: PRD 
   tasks:
     - name: Creando particion
       parted:
@@ -10,8 +10,6 @@
         part_start: 0%
         part_end: 100%
         unit: '%'        
-        # - name: Extendiendo VG 
-        #shell: vgextend fedora /dev/sdb1
     - name: Extendiendo vg_flisol
       lvg:
         vg: vg_flisol

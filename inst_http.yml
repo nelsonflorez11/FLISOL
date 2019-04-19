@@ -1,0 +1,42 @@
+---
+- hosts: PRD
+  tasks:
+    - name: Instalando apache
+      yum:
+        name: httpd
+        state: present
+    - name: Abriendo puerto 80 en FW
+      firewalld:
+        service: http
+        permanent: true
+        state: enabled
+    - name: Reiniciando servicio de FW
+      service: 
+        name: firewalld 
+        state: restarted
+    - name: Creando carpeta de apache
+      file:
+        path: /flisol_2019/flisol_15_anos
+        state: directory
+        owner: apache
+        group: apache
+    - name: Remplazando DocumentRoot
+      lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: 'DocumentRoot "/var/www/html"'
+        line: 'DocumentRoot "/flisol_2019/flisol_15_anos"'
+    - name: Remplazando Directory 
+      lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '<Directory "/var/www">'
+        line: '<Directory "/flisol_2019/flisol_15_anos">'
+    - name: Reiniciando servicio http
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+    - name: Copiando pagina index
+      copy:
+        src: /root/semillas/index.html
+        dest: /flisol_2019/flisol_15_anos
+    
