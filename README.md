@@ -1,6 +1,7 @@
-# FLISOL 2019
+# FLISOL Bogota 2019
 
-Este repositorio se utilizo para el taller del FLISoL 2019 (Bogota-Colombia), titulado Ansible realizando operaciones basicas.
+
+This repository is used for the FLISoL 2019 workshop (Bogotá-Colombia), titled Ansible performing basic operations.
 
 
 
