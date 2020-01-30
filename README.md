@@ -6,6 +6,10 @@ This repository is used for the FLISoL 2019 workshop (Bogotá-Colombia), titled 
 You will find how to restart services, make deployments, create users, create mount points, automatically with Ansible.
 
 
+For more information
+https://docs.ansible.com/
+
+
 
 
 
